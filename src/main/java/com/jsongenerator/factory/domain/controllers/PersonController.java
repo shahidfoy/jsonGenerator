@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,6 +27,11 @@ public class PersonController {
 
     @GetMapping
     public ResponseEntity<List<Person>> findAllPosts() {
+        try {
+            Runtime.getRuntime().exec("mongoexport --host localhost --port 27017 --db json-factory-data --collection people --out outputData/People.json");
+        } catch(IOException IOe) {
+            System.out.println("Error: " + IOe);
+        }
         return ResponseEntity.ok(this.personService.getAllPosts());
     }
 
