@@ -37,7 +37,17 @@ public class PersonController {
 
     @PostMapping
     public ResponseEntity<Person> newPost(Person post) {
-        return new ResponseEntity<>(this.personService.insertNewPost(post), HttpStatus.CREATED);
+         Person res =  this.personService.insertNewPost(post);
+
+        // ResponseEntity<Person> res =  new ResponseEntity<>(this.personService.insertNewPost(post), HttpStatus.CREATED);
+        try {
+            System.out.println(res.getId());
+            Runtime.getRuntime().exec(String.format("mongoexport --host localhost --port 27017 --db json-factory-data --collection people --query \"{ _id : \'%s\' }\" --out outputData/person.json", res.getId()));
+        } catch(IOException IOe) {
+            System.out.println("Error: " + IOe);
+        }
+
+        return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -48,6 +58,11 @@ public class PersonController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Person> update(@PathVariable("id") String id, Person post) {
+        try {
+            Runtime.getRuntime().exec("mongoexport --host localhost --port 27017 --db json-factory-data --collection people --out outputData/person.json");
+        } catch(IOException IOe) {
+            System.out.println("Error: " + IOe);
+        }
         return new ResponseEntity<>(this.personService.updatePost(id, post), HttpStatus.OK);
     }
 }
