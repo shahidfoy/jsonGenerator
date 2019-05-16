@@ -39,7 +39,6 @@ public class PersonController {
     public ResponseEntity<Person> newPost(Person post) {
          Person res =  this.personService.insertNewPost(post);
 
-        // ResponseEntity<Person> res =  new ResponseEntity<>(this.personService.insertNewPost(post), HttpStatus.CREATED);
         try {
             System.out.println(res.getId());
             Runtime.getRuntime().exec(String.format("mongoexport --host localhost --port 27017 --db json-factory-data --collection people --query \"{ _id : \'%s\' }\" --out outputData/person.json", res.getId()));
