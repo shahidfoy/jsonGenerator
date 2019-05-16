@@ -49,13 +49,13 @@ public class PersonController {
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/person/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removePost(@PathVariable("id") String id) {
         this.personService.deletePost(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/person/{id}")
     public ResponseEntity<Person> update(@PathVariable("id") String id, Person post) {
         Person res =  this.personService.updatePost(id, post);
         try {
